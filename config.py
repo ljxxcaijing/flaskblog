@@ -19,4 +19,17 @@ class DevelopmentConfig(Config):
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URI') or \
-            'splite:/// + os.path.join(basedir, 'data-dev')'
+            'sqlite:/// + os.path.join(basedir, 'data-dev')'
+
+class TestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
+            'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+
+config = {
+        'development': DevelopmentConfig,
+        'testing': TestingConfig,
+        'production': ProductionConfig,
+
+        'default': DevelopmentConfig
+}

@@ -28,3 +28,7 @@ def validate_username(self, field):
             User.query.filter_by(username=field.data).first():
         raise ValidationError('Username already in use.')
 
+class PostForm(Form):
+    body = TextAreaField("What's on your mind?", validators=[Required()])
+    submit = SubmitField('Submit')
+

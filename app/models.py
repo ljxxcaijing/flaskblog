@@ -83,7 +83,17 @@ class User(UserMixin, db.Model):
         seed()
         for i in range(count):
             u = User(email=forgery_py.internet.email_address(),
-                    username=for)
+                    username=forgery_py.internet.user_name(True),
+                    password=forgery_py.lorem_ipsum.word(),
+                    confirmed=True,
+                    name=forgery_py.name.full_name(),
+                    location=forgery_py.lorem_ipsum.sentence(),
+                    member_since=forgery_py.date.date(True))
+            db.session.add(u)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
 
     @property
     def password(self):
@@ -196,5 +206,18 @@ class Post(db.Model):
     body = db.Column(db.Text)
     timestamp = db.Column(db.Datetime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    
+    @staticmethod
+    def generate_fake(count=100):
+        from random import seed, randint
+        import forgery_py
 
-
+        seed()
+        user_count = User.query.count()
+        for i in range(count):
+            u = User.query.offset(randint(0, user_count - 1)). first()
+            p = Post(body=forgery_py.lorem_ipsum.sentence(randint(1,3)),
+                    timestamp=forgery_py.date.date(True),
+                    author=u)
+            db.session.add(p)
+            db.session.commit()

@@ -21,5 +21,13 @@
         <li class="disabled"><a href="#">&hellip;</a></li>
         {% endif %}
     {% endfor %}
+    <li{% if not agination.has_next %} class="disabled"{% endif %}>
+        <a href="{% if pagiantion.has_next %}{{ url_for(endpoint,
+           page = pagination.page + 1, **kwargs) }}{% else %}#{% endif %}">
+           &raquo;
+        </a>
+    </li>
+</ul>
+{% endmacro %}
 
         

@@ -1,11 +1,19 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% import "_macro.html" as marcos %}
 Hello, 
 {% if current_user.is_authenticated() %}
     {{ current_user.username }}
 {% else %}
     Stranger
 {% endif %}!
+
+{% include '_posts.html' %}
+{% if pagination %}
+<div class="pagination">
+    {{ marco.pagination_widget(pagination, '.index') }}
+</div>
+{% endif %}
 
 <div>
 <ul class="posts">
@@ -27,3 +35,8 @@ Hello,
     </li>
     {% endfor %}
 </ul>
+
+{% block scripts %}
+{{ super() }}
+{{ pagedown.include_pagedown() }}
+{% endblock %}

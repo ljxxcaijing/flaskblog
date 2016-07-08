@@ -1,3 +1,9 @@
+from flask.ext.pagedown.fields import PageDownField
+
+class PostForm(Form):
+    body = PageDownField("what's on your mind?", validators=[Required()])
+    submit = SubmitField('Submit')
+
 class EditProfileForm(Form):
     name = StringField('Real name', validators=[Length(0, 64)])
     location = StringField('Location', validators=[Length(0,64)])
